@@ -1,0 +1,92 @@
+# exericse 1
+  
+Kernel (Jadro)
+ - executes procedures in kernel mode (privileged)
+ - only accesible through TRAP instruction
+ - API is exposed through syscalls
+
+Shell (Powloka)
+ - f.e. bash, csh, zsh, sh
+ - heavy use of system calls
+ - basic interface between user (and user-space apps) and OS
+ - interactive
+ - not a part of operating system
+ 
+Operating System (System Operacyjny)
+ - provides interface for users.
+ - all its functionality is available through library procedures, which often use syscalls
+ - manages processes (their memory partitioning, registers, opened files, used resources, related processes).
+ - manages all resources available in the system (Drives, Processor, I/O).
+
+example chown (change owner)
+  The user types command chown <mode> <file-name> in shell
+  Shell directs a call to create new process to operating system
+  OS creates new process, allocates memory and sets TRAP instruction to kernel
+  Kernel applies syscall, then returns control to OS
+  OS than terminates process, cleans up and returns control to shell
+
+# exercise 2
+
+Operating System Distribution (dystrybucja)
+ - contains linux kernel, system libraries, extra libraries, usually package manger, extra apps
+ - e.g. Arch, Debian, Fedora, Ubuntu
+ - usually only few apps are exclusive to a particular distribution (installer, non-free apps)
+
+Package Manager
+ - f.e. deb
+ - package contains actual files, control files (dependencies, required shared libraries, config script, and install uninstall scripts (optionall))
+ - authenticity is verified by checksum available as metadata in package database
+
+Comparison
+ - using package manager allows for centralized lookup, addition, update and removal of software
+ - it's probably easier to use
+ - explicitly shows all the dependencies and installed software
+ - may have extra features allowing for faster, better management (removal of orphaned dependencies)
+
+# exercise 3
+
+Policy - a set of rules which system should obey, f.e. locked doors policy
+Mechanism - a practicall realisation of such policy f.e installing locks in doors and opening them with key
+
+For each given policy many diverse mechanisms could exist, i.e. doors could also be opened using magnetic cards given to people
+
+
+# exercise 4
+
+kernel - devices and resources management (I/O, CPU, Memory, Disks), available through syscalls
+syscall - API exposed by kernel, provides functions which are executed in kernel mode (privileged)
+if a syscall fails, it returns abnormal value (usually -1) and the error code is set in special variable (errno)
+
+fork - may fail if there are no more processes allowed, or the kernel cannot allocate needed memory
+kill - may fail if the process issuing the call doesn't have required permissions
+     - or the receiver of signal doesn't exist, or SIG isn't recognized
+mount - may fail if
+
+
+
+# exercise 6
+
+DOS ?
+
+# exercise 7
+
+process - container needed to run a program (address space, resources, list of opened files, variables etc)
+thread -  thread of execution (state of running program: program counter, registers, stack)
+resource - disks, I/O devices, files, address space
+
+processes were created to allow for multiple programs to run concurrently. They isolate each program's environment and protect it.
+threads allow operating system to divide single CPU between many programs by storing its information.
+
+process is a container wich allows a program to execute without interference. A thread is a unit of execution, there can be many
+threads in a single process, which will share its resources
+
+# exercise 8
+
+preemtion - temporarily interrupting a task (i.e thread of execution) without its cooperation
+round-robin - an algorithm which allows for multitasking by preemptively switching processes after set amount of time
+scheduler - a part of operating setting the order in which the processes will run
+dispatcher - a part of operating system actually switching the process
+
+
+
+

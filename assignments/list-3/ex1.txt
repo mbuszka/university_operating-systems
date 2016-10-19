@@ -1,0 +1,5 @@
+Memory layout (mapa pamieci) - layout of virtual memory available to a process or
+  layout (contents) of physical memory inside the computer
+
+Isolation - kernel is addressed in the higher virtual memory
+  of a program (above some arbitrary page)

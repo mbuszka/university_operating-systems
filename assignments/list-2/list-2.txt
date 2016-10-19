@@ -1,0 +1,78 @@
+# Exercise 1
+
+Real-time Systems
+ - either hard or soft, they provide guarantees of meeting specific deadlines by which they will complete every action
+ - NuttX (microkernel)
+
+Embedded Systems
+ - found in many different devices, which require computational power, but are not general purpose.
+ - MINIX (microkernel)
+
+Wireless Sensor Systems
+ - small, simple, usually event driven, supports networking
+ - TinyOS
+
+# Exercise 2
+
+Monolithic kernel
+ - whole operating system is one executable, always running, in which every procedure is free to call any other
+ - Cons:
+  - Large executable
+  - Failure in one procedure brings whole system down
+  - Hard to manage, many possible bugs
+  - High Memory Footprint
+
+
+
+Linux kernel
+ - System Call Interface
+ - Process Management
+ - Virtual File System
+ - Memory Management
+ - Network Stack
+ - Device Drivers
+ - Architecture Dependent Code
+
+# Exercise 3
+
+# Exercise 6
+
+Services provided by user-space programs instead of kernel programs, using microkernel
+ - drivers (I/O, Drives, Network)
+ - servers
+  - virtual filesystem, actual filesystem
+  - virtual memory
+  - network stack
+  - data store
+
+Reincarnation server
+ - pings device drivers, to check if they are available. If the driver died, or is unresponsive, this server
+   will automatically replace it with fresh copy.
+
+
+# Exercise 8
+
+Virualization allows for multiple indepndent, concurrent OSes on single machine. Used by hosting companies,
+enterprises, even normal users (f.e running Linux and Windows) 
+
+Paravirtualization - instead of simulating full computer, this software provides abstract, machine like interface with so called hypercalls
+
+Hypervisor type I
+ - runs on bare metal, providing full system virtualization to guest systems
+
+Hypervisor type II
+ - runs as hybrid user-mode program on host OS, with a kernel module, uses host's process management,
+   memory allocation and file-systems.
+
+pic (Stallings p.71)
+
+# Exercise 9
+
+OKL4 provides abstractions over underlying hardware divided in two orthogonal classes: memory and time.
+Features:
+ - address-spaces - memory abstraction
+ - threads - operating on virtual-state and using virtual-registers (both synchronously (by running thread) and async. (by other threads via system calls))
+ - inter-process-communication - synchronous exchange of zero or more words using ipc syscall, or via overlapping address-space 
+
+
+
