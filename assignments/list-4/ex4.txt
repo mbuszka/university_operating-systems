@@ -1,0 +1,29 @@
+# Przełączanie procesów
+  Proces A jest uruchomiony -> Proces B jest uruchomiony
+  - Proces A przechodzi do trybu jądra
+  - Proces A wykonuje przełączenie kontekstu
+  - Proces B może wykonać zmianę przestrzeni adresowej
+  - Proces B powraca do trybu użytkownika
+
+# Przełączanie przestrzeni adresowych - zmiana przestrzeni
+  adresowej w kontekście jednego wątku
+
+# TLB (Translation Lookaside Buffer)
+  Mapa z adresów wirtualnych do adresów fizycznych
+  Należy ją opróżnić przy zmianie przestrzeni adresowych,
+  bo przestaje wskazywać na poprawne adresy
+
+# Przełączanie kontekstu - zapisanie aktualnego wskaźnika na stos
+  jądra danego procesu do TCB, oraz część stanu wątku
+
+# Przełączanie trybu pracy - przejście z trybu użytkownika
+  (user mode) do trybu jądra (kernel mode) polega na wrzuceniu
+  na stos jądra aktulanego wskaźnika stosu oraz wskaźnika
+  instrukcji, przejściu procesora do trybu jądra i następnie
+  zapisaniu pozostałych rejestrów i flag na stos jądra
+
+# Dlaczego wątki mają stos jądra?
+  - Bezpieczeństwo - ponieważ proces ma pełną dowolność w używaniu swoich rejestrów
+    nie można mu zaufać i używać jego wskaźnika na stos. 
+  - Rozdział przywilejów - proces w trybie użytkownika nie może korzystać
+    z pamięci jądra i vice-versa

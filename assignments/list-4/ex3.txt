@@ -1,0 +1,14 @@
+# Przetwarzanie współbieżne
+  Jest koncepcja strukturyzacji programu, dzielenia go na wątki które mają różne cele
+  i koncepcyjnie wykonują się w tym samym czasie. Nie można polegać na kolejności
+  rzeczywistego wykonania wątków, nie jest ona deterministyczna
+
+# Przetwarzanie równoległe
+  Jest sposobem na większą wydajność obliczeń, pozwala wykonywać wiele operacji
+  w tym samym czasie na wielu procesorach
+
+# Funkcje/metody wielobieżne
+  To takie funkcje których wykonywanie może zostać przerwane, w trakcie przerwania
+  może zostać wywołana wielokrotnie i nie zmieni to efektów jej wykonania
+  (zarówno wartości zwracanej, jak i efektów ubocznych)
+

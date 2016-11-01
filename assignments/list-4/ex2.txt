@@ -1,0 +1,6 @@
+# Planowanie zadań (Scheduling) ustalanie kolejności i czasu działania procesów
+
+# Planista krótkoterminowy
+
+# Planista długoterminowy
+

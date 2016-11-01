@@ -1,0 +1,43 @@
+# fork()
+  - w kopii będzie tylko wątek który wywołał fork()
+  - cała pamięć zostanie przekopiowana, w tym blokady
+    zamki i struktury danych używane tylko przez pozostałe
+    wątki, co może prowadzić do wycieków pamięci, lub
+    zablokowania wątku na którejś blokadzie
+  - twórcy biblioteki pthreads rekomendują używanie od razu
+    wywołania execve()
+  - istnieje funkcja pthread_atfork(prepare_f, parent_f, child_f) 
+    która pozwala zdefiniować funkcje które zostaną wywołane przed
+    (prepare_f) wywołaniem fork() oraz tuż przed oddaniem kontroli
+    do nowego wątku (odpowiednio parent_f, child_f)
+# errno
+  - wywołanie errno w wątku tak naprawdę jest makrem, które
+    zwraca lvalue z kodem błędu tego wątku (lvalue można
+    nadpisywać, czyli można zrobić errno = 5;)
+
+# przestrzeń lokalna wątku
+  - przestrzeń w której program może trzymać zmienne globalne,
+    wyłączne dla każdego wątku
+    int __thread foo[512];
+
+# Sygnały
+  - maska jest ustalana dla każdego wątku
+  - dla większości sygnałów są one dostarczane do któregoś
+    (arbitralnie wybranego) wątku, tylko raz
+  - wyjątki: 
+    - SIGILL, SIGSEGV, SIGBUS, SIGFPE, SIGPIPE
+      - odbierane przez wątek który spowodował sygnał
+    - sygnały wysyłane za pomocą 
+      - pthread_kill()
+      - pthread_sigqueue()
+  - handlery są globalne dla całego procesu, tzn jeżeli jakiś
+    wątek ustawi handler dla SIGINT, to może on zostać wywołany
+    w kontekście któregokolwiek wątku
+
+# malloc
+  Ten który pierwszy wywoła funkcję, pozostane będą musiały
+  czekać aż zakończy jej wykonywanie (malloc jest chroniona
+  mutex'em)
+  
+
+  

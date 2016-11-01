@@ -1,0 +1,39 @@
+# Wątki przestrzeni użytkownika
+  # Zalety
+  - mogą zostać zaimplementowane w systemie bez wsparcia
+    dla wielu wątków
+  - szybkie zmiany wątków, nie wymagają przełączania
+    trybu pracy oraz szybkie planowanie wątków
+  - pozwalają na dobranie odpowiedniego algorytmu
+    planisty do typu programu/języka
+  # Wady
+  - jak obejść blokujące wywołania systemowe?
+    - obwolutowanie - opakowanie wywołania systemowego
+      funkcją biblioteczną która sprawdza czy można je
+      bezpiecznie (bez zblokowania procesu) wykonać
+      i ewentualnie zmienia wątek, zamiast wykonać wywołanie
+  - w przypadku page fault'a cały proces zostanie przełączony,
+    mimo że pozostałe wątki mogłyby zostać uruchomione
+  - brak przerwań czasowych, więc procesy nie mogą zostać 
+    wywłaszczone
+  - na ogół wątki są potrzebne przy częstych wywołaniach systemowych
+    które mogą blokować (IO), więc i tak muszą przejść do trybu jądra
+
+# Wątki przestrzeni jądra
+  # Zalety
+  - syscall, page fault, wywłaszczanie
+  # Wady
+  - większe koszta wszystkich wywołań (tworzenie, komunikacja,
+    synchronizacja)
+  - sygnały - kto ma dostać sygnał skierowany do procesu?
+  - fork - czy nowy proces ma mieć kopię wszyskich wątków, czy tylko
+    jeden który wywołał ten syscall
+
+# Wątki hybrydowe - aktywacje planisty
+  W tym modelu wątkami zarządza planista w przestrzeni użytkownika
+  więc gdy wątek chce zablokować, by zaczekać na inny nie trzeba
+  przełączać trybu pracy. Z drugiej strony, gdy wątek wykona
+  blokujące wywołanie systemowe, jądro powiadamia o tym planistę
+  (upcall) który może odpalić inne wątki. Także w przypadku przerwania
+  jeżeli dotyczy ono procesu który był aktywny, procesor uruchamia
+  planistę i pozwala mu zdecydować co dalej robić

@@ -1,0 +1,35 @@
+firefox& 
+lsof -c firefox
+
+# kolumny
+  COMMAND - nazwa aplikacji
+  PID - identyfikator procesu
+  USER - nazwa użytkownika który posiada dany proces
+  FD - numer uchwytu pliku lub ciąg znaków oznaczający:
+    cwd  current working directory;
+    Lnn  library references (AIX);
+    err  FD information error (see NAME column);
+    jld  jail directory (FreeBSD);
+    ltx  shared library text (code and data);
+    Mxx  hex memory-mapped type number xx.
+    m86  DOS Merge mapped file;
+    mem  memory-mapped file;
+    mmap memory-mapped device;
+    pd   parent directory;
+    rtd  root directory;
+    tr   kernel trace file (OpenBSD);
+    txt  program text (code and data);
+    v86  VP/ix mapped file; 
+  TYPE - typ węzła odpowiadającego plikowi
+    REG - zwykły plik
+    DIR - katalog
+    BLK - urządzenie blokowe (można wypisywać/czytać kawałki)
+    CHR - urządzenie znakowe (można wypisywać/czytać pojedyńcze znaki)
+    unix - gniazdo unixowe
+    inet - gniazdo internetowe
+    PIPE - potok First In First Out pozwala na komunikację między procesami
+
+lsof -c firefox > before
+# Otwórz nową kartę
+losf -c firefox > after
+diff -u before after

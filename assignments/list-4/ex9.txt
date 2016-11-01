@@ -1,0 +1,11 @@
+wywołanie fork() w powłoce
+przejście do trybu jądra
+stworzenie struktur dla procesu w jądrze
+  (stos, task_struct, thread_info)
+zmiana niektórych zmiennych, by odróżnić
+  dziecko od rodzica, ustawienie stanu na
+  UNINTERRUPTIBLE
+alloc_pid()
+skopiuj lub współdziel informacje systemu plików,
+  signal handlers, przestrzeń adresową, przestrzeń
+  nazw
