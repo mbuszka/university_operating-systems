@@ -20,18 +20,18 @@
 - instrukcja która może wykonać dwa zadania niepodzielnie w ramach wykonania jednej instrukcji
 - `XCHG` - zamienia wartość rejestru z wartością w pamięci
     
-    XCHG *register, *memory
-      tmp = *memory
-      *memory = *register
-      *register = tmp
+      XCHG *register, *memory
+        tmp = *memory
+        *memory = *register
+        *register = tmp
 
 - `compare_and_swap`
 
-    compare_and_swap *memory, test, new
-      old = *memory
-      if old == test
-        *memory = new
-      return old
+      compare_and_swap *memory, test, new
+        old = *memory
+        if old == test
+          *memory = new
+        return old
 
 #### Pamięć transkacyjna
 Rozwiązanie problemu współdzielonej pamięci za pomocą transakcji, czyli fragmentu kodu który
