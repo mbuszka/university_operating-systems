@@ -19,14 +19,14 @@
 #### Instrukcje atomowe
 - instrukcja która może wykonać dwa zadania niepodzielnie w ramach wykonania jednej instrukcji
 - `XCHG` - zamienia wartość rejestru z wartością w pamięci
-    
+  
       XCHG *register, *memory
         tmp = *memory
         *memory = *register
         *register = tmp
 
 - `compare_and_swap`
-
+  
       compare_and_swap *memory, test, new
         old = *memory
         if old == test
