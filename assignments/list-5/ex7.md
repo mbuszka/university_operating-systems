@@ -6,6 +6,7 @@ minimalna implementacja wymaga dwóch funkcji:
 
 komunikat może mieć dowolną strukturę, w zależności od potrzeb i stopnia
 skomplikowania systemu. Przykładowo
+    
     struct message {
       msg_id_t     id;
       msg_type_t   type;
