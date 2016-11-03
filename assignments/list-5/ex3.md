@@ -1,4 +1,4 @@
-**Sekcja krytyczna** - fragment kodu w którym program kożysta ze współdzielonych zasobów
+**Sekcja krytyczna** - fragment kodu w którym program korzysta ze współdzielonych zasobów
 (pamięć/IO/urządzenia)
 
 ### Założenia
