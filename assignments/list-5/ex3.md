@@ -47,7 +47,7 @@ Blokada w której proces aktywnie testuje, czy może wejść do sekcji krytyczne
     int bolt; \\ globalna zmienna, która mówi czy ktoś znajduje się w sekcji krytycznej
 
     void spinlock(bolt) {
-      while (compare_and_swap(&bolt, 0, 1) == 1) \\ czekaj aż będzie można wejść do sekcji krytycznej
+      while (compare_and_swap(&bolt, 0, 1) == 0) \\ czekaj aż będzie można wejść do sekcji krytycznej
       \\ sekcja krytyczna
       bolt = 0;
     }
