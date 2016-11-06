@@ -1,4 +1,4 @@
-**Sekcja krytyczna** - fragment kodu w którym program kożysta ze współdzielonych zasobów
+**Sekcja krytyczna** - fragment kodu w którym program korzysta ze współdzielonych zasobów
 (pamięć/IO/urządzenia)
 
 ### Założenia
@@ -19,19 +19,21 @@
 #### Instrukcje atomowe
 - instrukcja która może wykonać dwa zadania niepodzielnie w ramach wykonania jednej instrukcji
 - `XCHG` - zamienia wartość rejestru z wartością w pamięci
-  
-      XCHG *register, *memory
-        tmp = *memory
-        *memory = *register
-        *register = tmp
+```
+XCHG *register, *memory
+  tmp = *memory
+  *memory = *register
+  *register = tmp
+```
 
 - `compare_and_swap`
-  
-      compare_and_swap *memory, test, new
-        old = *memory
-        if old == test
-          *memory = new
-        return old
+```
+compare_and_swap *memory, test, new
+  old = *memory
+  if old == test
+    *memory = new
+  return old
+```
 
 #### Pamięć transkacyjna
 Rozwiązanie problemu współdzielonej pamięci za pomocą transakcji, czyli fragmentu kodu który
@@ -45,7 +47,7 @@ Blokada w której proces aktywnie testuje, czy może wejść do sekcji krytyczne
     int bolt; \\ globalna zmienna, która mówi czy ktoś znajduje się w sekcji krytycznej
 
     void spinlock(bolt) {
-      while (compare_and_swap(&bolt, 0, 1) == 1) \\ czekaj aż będzie można wejść do sekcji krytycznej
+      while (compare_and_swap(&bolt, 0, 1) == 0) \\ czekaj aż będzie można wejść do sekcji krytycznej
       \\ sekcja krytyczna
       bolt = 0;
     }
