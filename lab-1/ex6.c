@@ -59,6 +59,7 @@ void daemonize(char *cmd) {
 }
 
 int main(int argc, char *argv[]) {
+  if (argc < 1) exit(EXIT_FAILURE);
   char     *myname = basename(argv[0]);
   int       sig;
   siginfo_t si;

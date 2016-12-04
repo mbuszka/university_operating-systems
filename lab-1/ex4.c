@@ -5,7 +5,6 @@
 #include <ucontext.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <malloc.h>
 #include <signal.h>
 #include "utils.h"
 

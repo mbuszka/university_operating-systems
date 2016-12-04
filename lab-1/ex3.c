@@ -62,7 +62,7 @@ void writer() {
   char buf[BUF_SIZE];
   int ltrcnt = 0;
   int bytes_read;
-  while (bytes_read = read(rem_write.source, buf, BUF_SIZE)) {
+  while ((bytes_read = read(rem_write.source, buf, BUF_SIZE) ) > 0) {
     char *ptr = buf;
     while (ptr != buf + bytes_read) {
       printf("%s\n", ptr);
@@ -109,25 +109,21 @@ pid_t spawn_writer() {
   }
 }
 
-int main() { /*
-  char buf[BUF_SIZE];
-  int n = scanf("%s", buf);
-  printf("%d", n ++); */
-  pid_t reader_pid, remover_pid, writer_pid;
+int main() { 
   int status;
 
   init_pipe(&read_rem);
 
-  reader_pid = spawn_reader();
+  spawn_reader();
   
   init_pipe(&rem_write);
 
-  remover_pid = spawn_remover();
+  spawn_remover();
   
   close(read_rem.source);
   close(read_rem.sink);
 
-  writer_pid = spawn_writer();
+  spawn_writer();
 
   close(rem_write.source);
   close(rem_write.sink);
