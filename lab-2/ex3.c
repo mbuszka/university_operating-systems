@@ -59,9 +59,9 @@ void spawn_horses(int horse_count, pid_t horses[horse_count]) {
 }
 
 int main() {
-  int n = 10;
-  int horse_count = 2 * n;
-  rounds = 5;
+  int n = 1000;
+  int horse_count = n;
+  rounds = 500;
   pid_t horses[horse_count];
 
   barrier = initialize_barrier(n);

@@ -26,7 +26,7 @@ void *reader(void *arg) {
     // doesn't matter if len isn't true length
     if(list_search(&global_list, rand_r(&rand_state) % (global_list.len == 0 ? 1 :global_list.len), &found) == 0) {
       sprintf(buf, "[ READER : %d ] found this number %d\n", info->nr, found);
-      // fputs(buf, stdout);
+      fputs_unlocked(buf, stdout);
       // fflush_unlocked(stdout);
     } else {
       sprintf(buf, "[ READER : %d ] item not found\n", info->nr);
@@ -47,18 +47,18 @@ void *writer(void *arg) {
       item = rand_r(&rand_state);
       list_append(&global_list, item);
       sprintf(buf, "[ WRITER : %d ] appended this number %d\n", info->nr, item);
-      // fputs(buf, stdout);
+      fputs_unlocked(buf, stdout);
       // fflush_unlocked(stdout);
     } else {
       //doesn't matter if len isn't true length
       item = rand_r(&rand_state) % (global_list.len == 0 ? 1 :global_list.len);
       if (list_remove(&global_list, item) == 0) {
         sprintf(buf, "[ WRITER : %d ] removed at %d\n", info->nr, item);
-        // fputs(buf, stdout);
+        fputs_unlocked(buf, stdout);
         // fflush_unlocked(stdout);
       } else {
         sprintf(buf, "[ WRITER : %d ] couldn't remove at %d\n", info->nr, item);
-        // fputs(buf, stdout);
+        fputs_unlocked(buf, stdout);
         // fflush_unlocked(stdout);
       }
     }
@@ -93,7 +93,7 @@ void join(thread_info_t threads[], int n) {
 }
 
 int main () {
-  int n = 10;
+  int n = 10000;
   thread_info_t info[n];
 
   spawn(n, info);

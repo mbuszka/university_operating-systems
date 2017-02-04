@@ -1,4 +1,3 @@
-#define _MALLOC_INTERNAL
 #include <stdio.h>
 #include <assert.h>
 #include "arena.h"

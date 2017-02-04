@@ -2,7 +2,7 @@
 
 DIR 		= $(strip $(shell dirname $(realpath $(lastword $(MAKEFILE_LIST)))))
 CC 			= clang
-CFLAGS  = -g -Wall -Wextra -std=gnu99 -D_GNU_SOURCE
+CFLAGS  = -g -Wall -Wextra -std=gnu11 -D_GNU_SOURCE
 LDFLAGS = -L$(DIR) -lmalloc -Wl,-rpath=$(DIR) -pthread
 
 all : libmalloc.so tester test

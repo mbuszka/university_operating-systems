@@ -9,6 +9,7 @@
 mem_ctrl_t mem_ctrl = { LIST_HEAD_INITIALIZER(mem_ctrl), NULL, PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP };
 
 void *malloc(size_t size) {
+  fprintf(stderr, "Using malloc\n");
   pthread_mutex_lock(&mem_ctrl.mutex);
   void *ptr;
   int res = posix_memalign(&ptr, sizeof(void*), size);
@@ -118,9 +119,6 @@ mem_block_t *find_block(mem_arena_t* arena, void* ptr) {
 
 void free(void *ptr) {
   if (ptr == NULL) {
-    // setbuf(stdout, NULL);
-    // printf("NULL POINTER\n");
-    // dump_all();
     return;
   }
   pthread_mutex_lock(&mem_ctrl.mutex);
@@ -133,7 +131,6 @@ void free(void *ptr) {
 
   if (blk == NULL) {
     // we didn't allocate this pointer, so we have memory corruption
-
     pthread_mutex_unlock(&mem_ctrl.mutex);
     return;
   }
@@ -150,6 +147,7 @@ void free(void *ptr) {
   if (blk->mb_size + MEM_BLOCK_HDR_S == arena->ma_size) {
     remove_arena(arena);
   }
+  
   pthread_mutex_unlock(&mem_ctrl.mutex);
 }
 

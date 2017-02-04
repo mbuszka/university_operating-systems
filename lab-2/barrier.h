@@ -8,6 +8,7 @@ typedef struct {
   // sem_t mutex;
   sem_t in_door;
   sem_t out_door;
+  // sem_t mutex;
 } barrier_t;
 
 void bar_wait(barrier_t *b);

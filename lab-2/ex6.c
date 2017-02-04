@@ -17,7 +17,7 @@ sem_t proxy_sync;
 int   available[3] = { 0, 0, 0 };
 int   types[3] = { 0, 1, 2 };
 
-void *agent(void *arg);
+void agent();
 void *proxy(void *arg);
 void *smoker(void *arg);
 
@@ -50,19 +50,19 @@ int main () {
     assert(result == 0);
   }
   printf("Starting agent\n");
-  agent(NULL);
+  agent();
   return 0;
 }
 
-void *agent(void *arg) {
+void agent() {
   int x;
-  char buf[50];
+  // char buf[50];
   while (TRUE) {
     sem_wait(&smoke);
     x = rand() % 3;
-    sprintf(buf, "Agent woke up with %d %d\n", x, (x+1)%3);
-    fputs_unlocked(buf, stdout);
-    fflush_unlocked(stdout);
+    // sprintf(buf, "Agent woke up with %d %d\n", x, (x+1)%3);
+    // fputs_unlocked(buf, stdout);
+    // fflush_unlocked(stdout);
     sem_post(&resources[x]);
     sem_post(&resources[(x+1)%3]);
   }
@@ -70,7 +70,7 @@ void *agent(void *arg) {
 
 void *proxy(void *arg) {
   int type = *((int*) arg);
-  char buf[50];
+  // char buf[50];
   while (TRUE) {
     sem_wait(&resources[type]);
     sem_wait(&proxy_sync);

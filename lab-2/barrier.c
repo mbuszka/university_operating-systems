@@ -7,12 +7,14 @@ void bar_init(barrier_t *b, int n) {
   b->size = n;
   sem_init(&b->in_door, 1, n);
   sem_init(&b->out_door, 1, 0);
+  // sem_init(&b->mutex, 1, 1);
 }
 
 void bar_wait(barrier_t *b) {
   sem_wait(&b->in_door);
   int free_room;
   int n = b->size;
+  // sem_wait(&b->mutex);
   sem_getvalue(&b->in_door, &free_room);
   if (free_room == 0) {
     for (int i=0; i < n-1; i++) {
@@ -21,7 +23,9 @@ void bar_wait(barrier_t *b) {
     for (int i=0; i<n; i++) {
       sem_post(&b->in_door);
     }
+    // sem_post(&b->mutex);
   } else {
+    // sem_post(&b->mutex);
     sem_wait(&b->out_door);
   }
 }

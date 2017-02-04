@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <assert.h>
+#include <signal.h>
 #include "sem.h"
 
 /* ustaw maski sygnałów, żeby main dostał SIGINT
@@ -23,17 +24,30 @@ typedef struct {
 
 sem_t *forks;
 sem_t *waiter;
+int philosopher_count = 10000;
+thread_info_t *threads;
 
 void *philosopher(void *i);
-thread_info_t *spawn(int n);
-void join(thread_info_t* threads, int n);
+void spawn();
+void join();
+
+static void handler(int signum) {
+  assert(signum == SIGINT);
+  for (int i=0; i<philosopher_count; i++) {
+    pthread_cancel(threads[i].id);
+  }
+}
 
 int main(int argc, char *argv[]) {
-  int philosopher_count = 10;
+  struct sigaction action;
+
   if (argc == 2) {
     philosopher_count = atoi(argv[1]);
   }
-  thread_info_t *threads;
+
+  action.sa_handler = handler;
+  sigemptyset(&action.sa_mask);
+  assert(sigaction(SIGINT, &action, NULL) == 0);
 
   forks = calloc(philosopher_count, sizeof(sem_t));
   for (int i=0; i<philosopher_count; i++) {
@@ -43,43 +57,40 @@ int main(int argc, char *argv[]) {
   waiter = malloc(sizeof(sem_t));
   sem_init(waiter, philosopher_count-1);
 
-  threads = spawn(philosopher_count);
-  join(threads, philosopher_count);
+  spawn();
+  join();
 
+  free(waiter);
+  free(forks);
   return EXIT_SUCCESS;
 }
 
-
-thread_info_t *spawn(int n) {
+void spawn() {
   int result;
-  int *thread_return;
   pthread_attr_t attr;
-  thread_info_t *thread_info;
 
-  thread_info = calloc(n, sizeof(thread_info_t));
-  assert(thread_info != NULL);
+  threads = calloc(philosopher_count, sizeof(thread_info_t));
+  assert(threads != NULL);
 
   assert(pthread_attr_init(&attr) == 0);
 
-  for (int i = 0; i < n; i++) {
-    thread_info[i].nr = i+1;
-    thread_info[i].left_fork = &forks[i];
-    thread_info[i].right_fork = &forks[(i+1)%n];
-    result = pthread_create(&thread_info[i].id
+  for (int i = 0; i < philosopher_count; i++) {
+    threads[i].nr = i+1;
+    threads[i].left_fork = &forks[i];
+    threads[i].right_fork = &forks[(i+1)%philosopher_count];
+    result = pthread_create(&threads[i].id
                           , &attr
                           , philosopher
-                          , &thread_info[i]);
+                          , &threads[i]);
     assert(result == 0);
   }
-
-  return thread_info;
 }
 
-void join(thread_info_t *threads, int n) {
+void join() {
   thread_info_t *thread_return;
   int result;
-  for (int i=0; i<n; i++) {
-    result = pthread_join(threads[i].id, &thread_return);
+  for (int i=0; i<philosopher_count; i++) {
+    result = pthread_join(threads[i].id, (void *) &thread_return);
     assert(result == 0);
   }
 }
@@ -116,6 +127,14 @@ void eat(thread_info_t *info) {
 
 void *philosopher(void *arg) {
   thread_info_t *info = arg;
+  sigset_t sigset;
+  int oldtype;
+
+  sigemptyset(&sigset);
+  sigaddset(&sigset, SIGINT);
+  pthread_sigmask(SIG_BLOCK, &sigset, NULL);
+  pthread_setcanceltype(PTHREAD_CANCEL_ASYNCHRONOUS, &oldtype);
+
   while (TRUE) {
     think(info);
     take_forks(info);

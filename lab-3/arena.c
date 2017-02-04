@@ -12,11 +12,6 @@ extern mem_ctrl_t mem_ctrl;
 /* MEMORY ARENA OPERATIONS */
 
 mem_arena_t *spawn_arena(size_t size) {
-  // mutex lock
-
-  // setbuf(stdout, NULL);
-  // dump_all();
-
   int          ps;
   size_t       space_needed;
   mem_arena_t *new_arena;
@@ -127,7 +122,7 @@ void *allocate_block(mem_arena_t *arena, size_t size, size_t alignment) {
 
 // merge once used block, now being freed
 mem_block_t *merge_block(mem_arena_t *arena, mem_block_t *blk) {
-  assert(*(blk->mb_data - 1) == 0xDEADC0DE);
+  assert(blk->magic == 0xDEADC0DE);
   mem_block_t *next = LIST_NEXT(blk, mb_list);
   mem_block_t *prev = LIST_PREV(blk, &arena->ma_blocks, mem_block, mb_list);
   int prev_used, next_used;
@@ -161,7 +156,7 @@ mem_block_t *merge_block(mem_arena_t *arena, mem_block_t *blk) {
 mem_block_t* shift_block(mem_arena_t* arena, mem_block_t *blk, size_t diff) {
   assert(diff < sizeof(mem_block_t));
   assert(sabs(blk->mb_size) > diff);
-  assert(*(blk->mb_data - 1) == 0xDEADC0DE);
+  assert(blk->magic == 0xDEADC0DE);
   if (diff == 0) return blk;
 
   mem_block_t *prev = LIST_PREV(blk, &arena->ma_blocks, mem_block, mb_list);
@@ -215,7 +210,7 @@ mem_block_t* split_block(mem_arena_t* arena, mem_block_t *src, void *split) {
   // check if the new block is at least just after the src
   assert(((char*) (new_block + 1)) <= data_end);
   assert(((char*) new_block) >= ((char*) (src + 1)));
-  assert(*(src->mb_data - 1) == 0xDEADC0DE);
+  assert(src->magic == 0xDEADC0DE);
 
   diff = ((char*) split) - ((char *) src->mb_data);
   src->mb_size = src_size_sgn * diff;
@@ -232,7 +227,7 @@ mem_block_t* split_block(mem_arena_t* arena, mem_block_t *src, void *split) {
 }
 
 void insert_free_block(mem_arena_t *arena, mem_block_t *blk) {
-  assert(*(blk->mb_data - 1) == 0xDEADC0DE);
+  assert(blk->magic == 0xDEADC0DE);
   assert(blk->mb_size > 0);
   mem_block_t *prev, *next;
   if (LIST_EMPTY(&arena->ma_freeblks)) {
