@@ -179,7 +179,7 @@ struct direntry {
   u_int16_t deStartCluster;   /* starting cluster of file */
   u_int32_t deFileSize;       /* size of file in bytes */
 } __attribute__((packed));
-typedef struct direntry dentry_t;
+typedef struct direntry direntry_t;
 
 /*
  * Structure of a Win95 long name directory entry
