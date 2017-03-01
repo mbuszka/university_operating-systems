@@ -261,11 +261,11 @@ size_t align_ptr(void **ptr, size_t alignment) {
   return diff;
 }
 
-// __attribute__((constructor)) void init() {
-//   pthread_mutexattr_t    ma;
-//   pthread_mutexattr_init(&ma);
-//   pthread_mutexattr_settype(&ma, PTHREAD_MUTEX_RECURSIVE);
-//   pthread_mutex_init(&mem_ctrl.mutex, &ma);
-//   setbuf(stdout, NULL);
-//   printf("libmalloc initialized\n");
-// }
+__attribute__((constructor)) void init() {
+  pthread_mutexattr_t    ma;
+  pthread_mutexattr_init(&ma);
+  pthread_mutexattr_settype(&ma, PTHREAD_MUTEX_RECURSIVE);
+  pthread_mutex_init(&mem_ctrl.mutex, &ma);
+  setbuf(stdout, NULL);
+  printf("libmalloc initialized\n");
+}

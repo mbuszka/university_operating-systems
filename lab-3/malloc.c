@@ -5,11 +5,12 @@
 #include <stdio.h>
 #include <string.h>
 
+#define TRACE 1
+
 /* global memory controller */
 mem_ctrl_t mem_ctrl = { LIST_HEAD_INITIALIZER(mem_ctrl), NULL, PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP };
 
 void *malloc(size_t size) {
-  fprintf(stderr, "Using malloc\n");
   pthread_mutex_lock(&mem_ctrl.mutex);
   void *ptr;
   int res = posix_memalign(&ptr, sizeof(void*), size);
@@ -43,6 +44,7 @@ void *calloc(size_t count, size_t size) {
 
 int posix_memalign(void **memptr, size_t alignment, size_t size) {
   pthread_mutex_lock(&mem_ctrl.mutex);
+  if (TRACE) fprintf(stderr, "malloc : %s\n", __func__);
   mem_arena_t *arena;
   void *ptr;
   size_t diff;
@@ -122,6 +124,9 @@ void free(void *ptr) {
     return;
   }
   pthread_mutex_lock(&mem_ctrl.mutex);
+
+  if (TRACE) fprintf(stderr, "malloc : %s\n", __func__);
+
   mem_arena_t *arena;
   mem_block_t *blk;
 
@@ -147,11 +152,12 @@ void free(void *ptr) {
   if (blk->mb_size + MEM_BLOCK_HDR_S == arena->ma_size) {
     remove_arena(arena);
   }
-  
+
   pthread_mutex_unlock(&mem_ctrl.mutex);
 }
 
 void *realloc(void *ptr, size_t size) {
+  if (TRACE) fprintf(stderr, "malloc : %s\n", __func__);
   pthread_mutex_lock(&mem_ctrl.mutex);
   if (size == 0) {
     free(ptr);
